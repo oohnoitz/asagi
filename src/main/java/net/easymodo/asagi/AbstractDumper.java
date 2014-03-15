@@ -215,7 +215,7 @@ public abstract class AbstractDumper {
                 for (Post post : posts) {
                     try {
                         MediaPost mediaPost = new MediaPost(post.getNum(), post.getThreadNum(), post.isOp(),
-                                post.getPreviewOrig(), post.getMediaOrig(), post.getMediaHash());
+                                post.getPreviewOrig(), post.getMediaOrig(), post.getMediaFilename(), post.getMediaHash());
 
                         if (post.getPreviewOrig() != null && fullThumb) {
                             if (!mediaPreviewUpdates.contains(mediaPost))

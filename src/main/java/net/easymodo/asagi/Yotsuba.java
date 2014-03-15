@@ -1,6 +1,8 @@
 package net.easymodo.asagi;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +67,15 @@ public abstract class Yotsuba extends WWW {
         if (h.getPreview() == null)
             return null;
 
-        return this.wget(this.boardLinks.get("thumbLink") + "/thumb/" + h.getPreview());
+        String filename = h.getPreview();
+
+        try {
+            filename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            throw new ContentGetException(e);
+        }
+
+        return this.wget(this.boardLinks.get("thumbLink") + "/thumb/" + filename);
     }
 
     @Override
@@ -73,7 +83,15 @@ public abstract class Yotsuba extends WWW {
         if (h.getMedia() == null)
             return null;
 
-        return this.wget(this.boardLinks.get("imageLink") + "/src/" + h.getMedia());
+        String filename = h.getMediaFilename();
+
+        try {
+            filename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");
+        } catch (UnsupportedEncodingException e) {
+            throw new ContentGetException(e);
+        }
+
+        return this.wget(this.boardLinks.get("imageLink") + "/src/" + filename);
     }
 
     public int parseDate(int dateUtc) {
