@@ -64,7 +64,7 @@ public abstract class Yotsuba extends WWW {
 
     @Override
     public InputStream getMediaPreview(MediaPost h) throws ContentGetException {
-        if (h.getPreview() == null)
+        if (h.getPreview() == null || h.getMediaExt().equals(".swf"))
             return null;
 
         String filename = h.getPreview();
@@ -83,7 +83,7 @@ public abstract class Yotsuba extends WWW {
         if (h.getMedia() == null)
             return null;
 
-        String filename = h.getMediaFilename();
+        String filename = h.getMediaExt().equals(".swf") ? h.getMediaFilename() : h.getMedia();
 
         try {
             filename = URLEncoder.encode(filename, "UTF-8").replace("+", "%20");

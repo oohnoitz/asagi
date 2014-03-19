@@ -6,17 +6,19 @@ public class MediaPost {
     private final boolean op;
     private final String preview;
     private final String media;
-    private final String mediaFilename;
     private final String mediaHash;
+    private final String mediaFilename;
+    private final String mediaExt;
 
-    public MediaPost(int num, int tnum, boolean op, String preview, String media, String mediaFilename, String mediaHash) {
+    public MediaPost(int num, int tnum, boolean op, String preview, String media, String mediaHash, String mediaFilename, String mediaExt) {
         this.num = num;
         this.threadNum = tnum;
         this.op = op;
         this.preview = preview;
         this.media = media;
-        this.mediaFilename = mediaFilename;
         this.mediaHash = mediaHash;
+        this.mediaFilename = mediaFilename;
+        this.mediaExt = mediaExt;
     }
 
     public int getNum() {
@@ -35,12 +37,16 @@ public class MediaPost {
         return media;
     }
 
+    public String getMediaHash() {
+        return mediaHash;
+    }
+
     public String getMediaFilename() {
         return mediaFilename;
     }
 
-    public String getMediaHash() {
-        return mediaHash;
+    public String getMediaExt() {
+        return mediaExt;
     }
 
     public boolean isOp() {
