@@ -354,7 +354,7 @@ public class YotsubaHTML extends Yotsuba {
             throw new ContentParseException("Could not create post " + num , e);
         }
 
-        String exif = this.cleanSimple(this.parseMeta(comment));
+        String exif = this.cleanSimple(this.parseMeta(comment, null));
 
         Post post = new Post();
         post.setLink(link);

@@ -218,7 +218,7 @@ public class YotsubaJSON extends Yotsuba {
         p.setCapcode(capcode);
         p.setPosterHash(posterHash);
         p.setPosterCountry(posterCountry);
-        p.setExif(this.cleanSimple(this.parseMeta(pj.getCom())));
+        p.setExif(this.cleanSimple(this.parseMeta(pj.getCom(), pj.getTag())));
 
         return p;
     }

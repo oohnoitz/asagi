@@ -20,6 +20,7 @@ public class PostJson {
     private long tim;
     private String filename;
     private String ext;
+    private String tag;
     private int fsize;
     private String md5;
     private int w;
@@ -175,6 +176,14 @@ public class PostJson {
 
     public void setExt(String ext) {
         this.ext = ext;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public int getFsize() {

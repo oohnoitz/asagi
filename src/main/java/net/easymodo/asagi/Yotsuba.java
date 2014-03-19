@@ -157,7 +157,14 @@ public abstract class Yotsuba extends WWW {
         return this.cleanSimple(text);
     }
 
-    public String parseMeta(String text) {
+    public String parseMeta(String text, String tag) {
+        if (tag != null) {
+            Map<String, String> flashJson = new HashMap<String, String>();
+            flashJson.put("Tag", tag);
+
+            return GSON.toJson(flashJson);
+        }
+
         if (text == null) return null;
 
         Matcher exif = exifPattern.matcher(text);

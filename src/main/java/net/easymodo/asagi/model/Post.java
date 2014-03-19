@@ -18,6 +18,7 @@ public class Post {
     private int mediaSize;
     private String mediaHash;
     private String mediaFilename;
+    private String mediaTag;
     private boolean spoiler;
     private boolean deleted;
     private String capcode;
@@ -171,6 +172,14 @@ public class Post {
 
     public void setMediaFilename(String mediaFilename) {
         this.mediaFilename = mediaFilename;
+    }
+
+    public String getMediaTag() {
+        return mediaTag;
+    }
+
+    public void setMediaTag(String mediaTag) {
+        this.mediaTag = mediaTag;
     }
 
     public boolean isSpoiler() {
