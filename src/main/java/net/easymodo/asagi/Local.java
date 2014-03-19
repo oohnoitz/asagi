@@ -206,7 +206,7 @@ public class Local extends Board {
 
     public void insertMedia(MediaPost h, Board source, boolean isPreview) throws ContentGetException, ContentStoreException {
         // Post has no media
-        if ((isPreview && h.getPreview() == null) || (!isPreview && h.getMedia() == null))
+        if ((isPreview && h.getPreview() == null) || (!isPreview && h.getMedia() == null) || (isPreview && h.getMediaExt().equals(".swf")))
             return;
 
         Media mediaRow;
