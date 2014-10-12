@@ -106,6 +106,8 @@ public abstract class YotsubaAbstract extends WWW {
         // bold text
         text = text.replaceAll("<(?:b|strong)>(.*?)</(?:b|strong)>", "[b]$1[/b]");
         // code tags
+        text = text.replaceAll("<code><pre[^>]*>", "[code]");
+        text = text.replaceAll("</pre></code>", "[/code]");
         text = text.replaceAll("<pre[^>]*>", "[code]");
         text = text.replaceAll("</pre>", "[/code]");
         // math tags
