@@ -11,6 +11,7 @@
       "password": "1234",
       "charset": "utf8mb4",
       "path": "/Users/eksi/asagi/",
+      "updateFileLastModified": false,
       "useOldDirectoryStructure": false,
       "webserverGroup": "_www",
       "thumbThreads": 5,

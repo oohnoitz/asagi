@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 @ThreadSafe
 public class Local extends Board {
     private final String path;
+    private final boolean updateFileLastModified;
     private final boolean useOldDirectoryStructure;
     private final int webGroupId;
 
@@ -42,6 +43,7 @@ public class Local extends Board {
 
     public Local(String path, BoardSettings info, DB db) {
         this.path = path;
+        this.updateFileLastModified = info.getUpdateFileLastModified();
         this.useOldDirectoryStructure = info.getUseOldDirectoryStructure();
         this.db = db;
 
@@ -231,7 +233,7 @@ public class Local extends Board {
         // Construct the path and back down if the file already exists
         File outputFile = new File(outputDir + "/" + filename);
         if(outputFile.exists()) {
-            if (!isPreview) outputFile.setLastModified(System.currentTimeMillis());
+            if (this.updateFileLastModified && !isPreview) outputFile.setLastModified(System.currentTimeMillis());
             return;
         }
 
@@ -249,7 +251,7 @@ public class Local extends Board {
         OutputStream outFile = null;
         File tempFile = null;
         try {
-             tempFile = File.createTempFile(filename + "_", null, new File(tempFilePath + "/"));
+            tempFile = File.createTempFile(filename + "_", null, new File(tempFilePath + "/"));
 
             outFile = new BufferedOutputStream(new FileOutputStream(tempFile));
 
