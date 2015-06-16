@@ -266,7 +266,7 @@ public abstract class SQL implements DB {
     public synchronized void markDeleted(DeletedPost post) throws ContentStoreException, DBConnectionException {
         while(true) { try {
             updateDeletedStmt.setBoolean(1, true);
-            updateDeletedStmt.setInt(2, (int) DateUtils.adjustTimestampEpoch(post.getDate(),DateUtils.NYC_TIMEZONE));
+            updateDeletedStmt.setInt(2, (int) DateUtils.adjustTimestampEpoch(post.getDate(), DateUtils.NYC_TIMEZONE));
             updateDeletedStmt.setInt(3, post.getNum());
             updateDeletedStmt.setInt(4, 0);
             updateDeletedStmt.execute();
