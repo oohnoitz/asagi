@@ -308,7 +308,7 @@ public abstract class AbstractDumper {
                            // If we found the topic before the page limbo
                            // threshold, then it was forcefully deleted
                            if(oldTopic.getLastPage() < pageLimbo) {
-                               if(oldTopic.getAllPosts().size() > 1) {
+                               if(oldTopic.getAllPosts().size() >= 1) {
                                    int op = oldTopic.getAllPosts().iterator().next();
                                    try {
                                        DeletedPost post = new DeletedPost(op, System.currentTimeMillis() / 1000);
