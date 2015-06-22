@@ -34,28 +34,48 @@ BEGIN
     "%%BOARD%%_threads" op
   SET
     op.time_last = (
-      COALESCE(GREATEST(
-        op.time_op,
-        d_time_last
-      ), op.time_op)
+      COALESCE(
+        GREATEST(op.time_op, d_time_last),
+        op.time_op
+      )
     ),
     op.time_bump = (
-      COALESCE(GREATEST(
-        op.time_op,
-        d_time_bump
-      ), op.time_op)
+      COALESCE(
+        GREATEST(op.time_bump, d_time_bump),
+        op.time_op
+      )
     ),
     op.time_ghost = (
-      d_time_ghost
+      IF (
+        GREATEST(
+          IFNULL(op.time_ghost, 0),
+          d_time_ghost
+        ) <> 0,
+        GREATEST(
+          IFNULL(op.time_ghost, 0),
+          d_time_ghost
+        ),
+        NULL
+      )
     ),
     op.time_ghost_bump = (
-      d_time_ghost_bump
+      IF(
+        GREATEST(
+          IFNULL(op.time_ghost_bump, 0),
+          d_time_ghost_bump
+        ) <> 0,
+        GREATEST(
+          IFNULL(op.time_ghost_bump, 0),
+          d_time_ghost_bump
+        ),
+        NULL
+      )
     ),
     op.time_last_modified = (
-      COALESCE(GREATEST(
-        op.time_op,
-        d_time_last_modified
-      ), op.time_op)
+      COALESCE(
+        GREATEST(op.time_last_modified, d_time_last_modified),
+        op.time_op
+      )
     ),
     op.nreplies = (
       op.nreplies + 1
