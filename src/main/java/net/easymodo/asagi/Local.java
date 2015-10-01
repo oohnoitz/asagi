@@ -242,7 +242,7 @@ public class Local extends Board {
         try {
             jedis = jedisPool.getResource();
             boolean redisCheck = jedis.exists("asagi:" + outputDir + "/" + filename);
-            if (!redisCheck || outputFile.exists()) {
+            if (redisCheck || outputFile.exists()) {
                 jedis.setex("asagi:" + outputDir + "/" + filename, 60*60*24*7, "true");
                 return;
             }
