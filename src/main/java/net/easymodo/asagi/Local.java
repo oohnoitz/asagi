@@ -11,6 +11,9 @@ import net.easymodo.asagi.posix.Group;
 import net.easymodo.asagi.posix.Posix;
 import net.easymodo.asagi.settings.BoardSettings;
 import org.apache.http.annotation.ThreadSafe;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.io.*;
 import java.util.regex.Matcher;
@@ -30,6 +33,7 @@ public class Local extends Board {
 
     private final static Posix posix;
     private DB db;
+    private JedisPool jedisPool;
 
     private final static Pattern oldDirectoryMatchingPattern = Pattern.compile("(\\d+?)(\\d{2})\\d{0,3}$");
 
@@ -46,6 +50,8 @@ public class Local extends Board {
         this.updateFileLastModified = info.getUpdateFileLastModified();
         this.useOldDirectoryStructure = info.getUseOldDirectoryStructure();
         this.db = db;
+
+        this.jedisPool = new JedisPool(new JedisPoolConfig(), "localhost");
 
         // getgrnam is thread-safe on sensible OSes, but it's not thread safe
         // on most ones.
@@ -232,9 +238,18 @@ public class Local extends Board {
 
         // Construct the path and back down if the file already exists
         File outputFile = new File(outputDir + "/" + filename);
-        if(outputFile.exists()) {
-            if (this.updateFileLastModified && !isPreview) outputFile.setLastModified(System.currentTimeMillis());
-            return;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            boolean redisCheck = jedis.exists("asagi:" + outputDir + "/" + filename);
+            if (!redisCheck && outputFile.exists()) {
+                jedis.setex("asagi:" + outputDir + "/" + filename, 60*60*24*7, "true");
+                return;
+            }
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
         }
 
         // Open a temp file for writing
