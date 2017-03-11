@@ -228,6 +228,21 @@ public class Local extends Board {
 
         if(filename == null) return;
 
+        // Let's do a premature check to see if the file already exists or not.
+        // We want to preemptively avoid doing any type of disk i/o stat calls.
+        Jedis jedis = null;
+        String fileCache = "asagi:" + this.getDir(this.getSubdirs(filename), isPreview ? DIR_THUMB : DIR_MEDIA, FULL_FILE) + "/" + filename;
+        try {
+            jedis = jedisPool.getResource();
+            if (jedis.exists(fileCache)) {
+                return;
+            }
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+
         // Create the dir structure (if necessary) and return the path to where we're outputting our file
         // Filename is enough for us here, we just need the first part of the string
         String outputDir;
@@ -238,12 +253,13 @@ public class Local extends Board {
 
         // Construct the path and back down if the file already exists
         File outputFile = new File(outputDir + "/" + filename);
-        Jedis jedis = null;
+        jedis = null;
         try {
             jedis = jedisPool.getResource();
-            boolean redisCheck = jedis.exists("asagi:" + outputDir + "/" + filename);
-            if (redisCheck || outputFile.exists()) {
-                jedis.setex("asagi:" + outputDir + "/" + filename, 60*60*24*7, "true");
+            // If the file exists, renew the fileCache status on it so that we can
+            // process files that do matter.
+            if (outputFile.exists()) {
+                jedis.setex(fileCache, 60*60*24*7, "true");
                 return;
             }
         } finally {
@@ -305,4 +321,3 @@ public class Local extends Board {
         }
     }
 }
-
